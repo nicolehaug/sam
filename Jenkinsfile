@@ -1,10 +1,10 @@
 pipeline {
-  agent any
-  stages {
-    stage('deploy stack') {
-      steps {
-        sh 'sam deploy --stack-name philosophy -t template.yaml --s3-bucket gijanehaug --capabilities CAPABILITY_IAM'
+    agent { docker { image 'public.ecr.aws/sam/build-nodejs14.x' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'sam deploy --no-confirm-changeset --no-fail-on-empty-changeset'
+            }
         }
-      }
     }
-  }
+}
